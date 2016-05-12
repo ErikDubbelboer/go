@@ -26,6 +26,7 @@ import (
 	"strings"
 	"sync"
 	"sync/atomic"
+	"text/template"
 	"time"
 )
 
@@ -1797,23 +1798,9 @@ func Redirect(w ResponseWriter, r *Request, urlStr string, code int) {
 	// response because older user agents may not understand 301/307.
 	// Shouldn't send the response for POST or HEAD; that leaves GET.
 	if r.Method == "GET" {
-		note := "<a href=\"" + htmlEscape(urlStr) + "\">" + statusText[code] + "</a>.\n"
+		note := "<a href=\"" + template.HTMLEscapeString(urlStr) + "\">" + statusText[code] + "</a>.\n"
 		fmt.Fprintln(w, note)
 	}
-}
-
-var htmlReplacer = strings.NewReplacer(
-	"&", "&amp;",
-	"<", "&lt;",
-	">", "&gt;",
-	// "&#34;" is shorter than "&quot;".
-	`"`, "&#34;",
-	// "&#39;" is shorter than "&apos;" and apos was not in HTML until HTML5.
-	"'", "&#39;",
-)
-
-func htmlEscape(s string) string {
-	return htmlReplacer.Replace(s)
 }
 
 // Redirect to a fixed URL

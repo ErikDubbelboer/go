@@ -378,6 +378,7 @@ var pkgDeps = map[string][]string{
 		"golang.org/x/net/http2/hpack",
 		"internal/nettrace",
 		"net/http/httptrace",
+		"text/template",
 	},
 	"net/http/internal":  {"L4"},
 	"net/http/httptrace": {"context", "internal/nettrace", "net", "reflect", "time"},
